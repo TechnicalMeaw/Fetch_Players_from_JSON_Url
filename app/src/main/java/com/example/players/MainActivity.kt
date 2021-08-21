@@ -68,7 +68,7 @@ class MainActivity : AppCompatActivity(), CountryListener {
         }
 
         handler.post{
-            adapter = CountryRVAdapter(list.toList(), this)
+            adapter = CountryRVAdapter(list.sortedBy { it.name }.toList(), this)
             countryRecyclerView?.adapter = adapter
             adapter.notifyDataSetChanged()
             Log.d("GetData","Country:: $list")

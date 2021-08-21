@@ -3,6 +3,7 @@ package com.example.players
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.Button
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -34,6 +35,24 @@ class PlayersActivity : AppCompatActivity() {
 
         val title : TextView = findViewById(R.id.titleTextView)
         title.text = "All Players of $countryName"
+
+
+        val sortFirstNameBtn : Button = findViewById(R.id.sortFirstNameBtn)
+        val sortLastNameBtn : Button = findViewById(R.id.sortLastNameBtn)
+
+        sortFirstNameBtn.setOnClickListener {
+            list.sortBy { it.firstName }
+            adapter = PlayerRVAdapter(this, list.toList())
+            playerRV?.adapter = adapter
+            adapter.notifyDataSetChanged()
+        }
+
+        sortLastNameBtn.setOnClickListener {
+            list.sortBy { it.lastName }
+            adapter = PlayerRVAdapter(this, list.toList())
+            playerRV?.adapter = adapter
+            adapter.notifyDataSetChanged()
+        }
     }
 
 
@@ -51,14 +70,15 @@ class PlayersActivity : AppCompatActivity() {
                     val isCaptain = player.getBoolean("captain")
 
                     list.add(PlayerItem(fullName[0], fullName[1], isCaptain))
-                    adapter = PlayerRVAdapter(this, list.toList())
-                    playerRV?.adapter = adapter
-                    adapter.notifyDataSetChanged()
-                    Log.d("GetPlayers", "Players :: $list")
                 }
             }
         }catch (e: Exception){
             e.stackTrace
         }
+
+        adapter = PlayerRVAdapter(this, list.toList())
+        playerRV?.adapter = adapter
+        adapter.notifyDataSetChanged()
+        Log.d("GetPlayers", "Players :: $list")
     }
 }
